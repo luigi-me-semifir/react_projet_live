@@ -1,9 +1,18 @@
+import { useState } from "react";
 import Techno from "../techno/Techno";
 import styles from "./Contenue.module.scss";
-import { data } from "../../data/technos";
+import { useEffect } from "react";
+import TechnosService from "../../services/technosService";
 
 const Contenue = () => {
-  const technos = data;
+  const [technos, setTechnos] = useState([]);
+
+  useEffect(() => {
+    TechnosService.getTechnos().then((techno) => setTechnos(techno));
+  }, []);
+  console.log(technos);
+
+  console.log("sans useEffect", technos);
 
   return (
     <section className="flex-fill container p-20">
@@ -11,7 +20,7 @@ const Contenue = () => {
       <div className={`card p-20 ${styles.contentCard}`}>
         <div className={styles.grid}>
           {technos.map((techno) => (
-            <Techno key={techno._id} {...techno} />
+            <Techno key={techno.id} {...techno} />
           ))}
         </div>
       </div>
